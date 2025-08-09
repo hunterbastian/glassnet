@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+/* Frutiger Aero Global Styles */
+html {
+  scroll-behavior: smooth;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  height: 100vh;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  overscroll-behavior: bounce;
+}
+
+/* Glass morphism utilities */
+.glass {
+  @apply backdrop-blur-sm bg-white/20 border border-white/30 rounded-2xl shadow-xl;
+}
+
+.glass-strong {
+  @apply backdrop-blur-md bg-white/30 border border-white/40 rounded-2xl shadow-xl;
+}
+
+/* Floating bubble animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-8px) rotate(1deg); }
+  66% { transform: translateY(-4px) rotate(-1deg); }
+}
+
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(2deg); }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.bubble {
+  @apply absolute rounded-full bg-gradient-to-br from-white/40 to-white/10 backdrop-blur-sm border border-white/30;
+  animation: float 5s ease-in-out infinite;
+}
+
+.bubble-slow {
+  animation: floatSlow 7s ease-in-out infinite;
+}
+
+.fade-in {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+/* Gradient backgrounds */
+.gradient-bg {
+  background: linear-gradient(135deg, 
+    #667eea 0%, 
+    #764ba2 25%, 
+    #f093fb 50%, 
+    #f5576c 75%, 
+    #4facfe 100%);
+  /* Removed heavy gradient animation for better performance */
+}
+
+/* Lens flare effect */
+.lens-flare {
+  position: relative;
+  overflow: hidden;
+}
+
+.lens-flare::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.3) 0%, transparent 50%);
+  pointer-events: none;
+}

@@ -1,0 +1,88 @@
+---
+export interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="GlassNet - A beautiful Frutiger Aero experience" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+  </head>
+  <body class="gradient-bg">
+    <!-- Reduced background bubbles for better performance -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden">
+      <div class="bubble w-32 h-32 top-20 left-20" style="animation-delay: 0s;"></div>
+      <div class="bubble bubble-slow w-24 h-24 top-40 right-32" style="animation-delay: 3s;"></div>
+      <div class="bubble w-28 h-28 bottom-20 right-20" style="animation-delay: 6s;"></div>
+    </div>
+
+    <!-- Simplified Header -->
+    <header class="absolute top-0 left-0 right-0 z-50 py-2 px-6">
+      <nav class="glass max-w-4xl mx-auto px-4 py-2 lens-flare">
+        <div class="flex items-center justify-center">
+          <div class="text-lg font-bold text-white">
+            GlassNet
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+      <slot />
+    </main>
+
+    <!-- Simple fade-in animation and scroll bounce script -->
+    <script>
+      // Simple fade-in for hero section
+      document.addEventListener('DOMContentLoaded', () => {
+        const heroSection = document.querySelector('.fade-in-section');
+        if (heroSection) {
+          heroSection.style.opacity = '0';
+          heroSection.style.animation = 'fadeInUp 1.2s ease-out 0.5s forwards';
+        }
+
+        // Optimized scroll bounce back effect - throttled for better performance
+        let scrollTimeout;
+        let isScrolling = false;
+        let lastScrollTime = 0;
+
+        const handleScroll = () => {
+          const now = Date.now();
+          // Throttle scroll events to every 100ms for better performance
+          if (now - lastScrollTime < 100) return;
+          lastScrollTime = now;
+
+          if (!isScrolling) {
+            isScrolling = true;
+            clearTimeout(scrollTimeout);
+            
+            scrollTimeout = setTimeout(() => {
+              window.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: 'smooth'
+              });
+              isScrolling = false;
+            }, 200); // Slightly longer delay for smoother feel
+          }
+        };
+
+        // Add throttled scroll event listener
+        window.addEventListener('scroll', handleScroll, { passive: true });
+      });
+    </script>
+  </body>
+</html>
+
+<style>
+  /* Import global styles */
+  @import '../styles/global.css';
+</style>
