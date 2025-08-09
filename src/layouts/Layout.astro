@@ -16,6 +16,8 @@ const { title } = Astro.props;
     <title>{title}</title>
   </head>
   <body class="gradient-bg">
+
+
     <!-- Reduced background bubbles for better performance -->
     <div class="fixed inset-0 pointer-events-none overflow-hidden">
       <div class="bubble w-32 h-32 top-20 left-20" style="animation-delay: 0s;"></div>
@@ -23,31 +25,41 @@ const { title } = Astro.props;
       <div class="bubble w-28 h-28 bottom-20 right-20" style="animation-delay: 6s;"></div>
     </div>
 
-    <!-- Simplified Header -->
-    <header class="absolute top-0 left-0 right-0 z-50 py-2 px-6">
-      <nav class="glass max-w-sm mx-auto px-4 py-2 lens-flare">
-        <div class="flex items-center justify-center">
-          <div class="text-lg font-bold text-white">
-            GlassNet
-          </div>
-        </div>
-      </nav>
-    </header>
+
 
     <!-- Main Content -->
     <main>
       <slot />
     </main>
 
+    <!-- Footer -->
+    <footer class="absolute bottom-0 left-0 right-0 z-50 py-4 fade-in-footer">
+      <div class="text-center">
+        <p class="text-white/70 font-mono text-sm shimmer-glass">
+          HUNTER BASTIAN @ 2025 | MINISITE I
+        </p>
+      </div>
+    </footer>
+
     <!-- Simple fade-in animation and scroll bounce script -->
     <script>
-      // Simple fade-in for hero section
+      // Simple fade-in for hero section and footer
       document.addEventListener('DOMContentLoaded', () => {
         const heroSection = document.querySelector('.fade-in-section');
+        const footer = document.querySelector('.fade-in-footer');
+        
         if (heroSection) {
           heroSection.style.opacity = '0';
           heroSection.style.animation = 'fadeInUp 1.2s ease-out 0.5s forwards';
         }
+        
+        if (footer) {
+          footer.style.opacity = '0';
+          // Start footer animation 0.5s after hero animation completes (0.5s + 1.2s + 0.5s = 2.2s)
+          footer.style.animation = 'fadeInUp 1.0s ease-out 2.2s forwards';
+        }
+
+
 
         // Optimized scroll bounce back effect - throttled for better performance
         let scrollTimeout;
@@ -85,4 +97,49 @@ const { title } = Astro.props;
 <style>
   /* Import global styles */
   @import '../styles/global.css';
+  
+  /* Shimmer effect for footer */
+  @keyframes shimmer {
+    0% { transform: translateX(-100%) skewX(-15deg); }
+    100% { transform: translateX(200%) skewX(-15deg); }
+  }
+  
+  .shimmer-glass {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+  
+  .shimmer-glass::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent
+    );
+    transform: translateX(-100%) skewX(-15deg);
+    transition: transform 0.6s;
+    pointer-events: none;
+    z-index: 1;
+  }
+  
+  .shimmer-glass:hover::before {
+    animation: shimmer 0.6s ease-out;
+  }
+  
+  .shimmer-glass:hover {
+    transform: scale(1.05);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  }
+
+
 </style>

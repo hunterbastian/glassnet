@@ -10,7 +10,7 @@ html {
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #7c9bd9 0%, #5a7fa6 100%);
   height: 100vh;
   overflow-y: auto;
   margin: 0;
@@ -66,12 +66,9 @@ body {
 /* Gradient backgrounds */
 .gradient-bg {
   background: linear-gradient(135deg, 
-    #667eea 0%, 
-    #764ba2 25%, 
-    #f093fb 50%, 
-    #f5576c 75%, 
-    #4facfe 100%);
-  /* Removed heavy gradient animation for better performance */
+    #7c9bd9 0%, 
+    #5a7fa6 100%);
+  /* Blue-focused neutral gradient for better focus on content */
 }
 
 /* Lens flare effect */
