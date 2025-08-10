@@ -14,8 +14,12 @@ const { title } = Astro.props;
     <meta name="description" content="GlassNet - A beautiful Frutiger Aero experience" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <title>{title}</title>
     <script>
+      // @ts-ignore - analytics helper attached to window at runtime
       window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
     </script>
     <script defer src="/_vercel/insights/script.js"></script>
@@ -53,12 +57,12 @@ const { title } = Astro.props;
         const heroSection = document.querySelector('.fade-in-section');
         const footer = document.querySelector('.fade-in-footer');
         
-        if (heroSection) {
+        if (heroSection instanceof HTMLElement) {
           heroSection.style.opacity = '0';
           heroSection.style.animation = 'fadeInUp 1.2s ease-out 0.5s forwards';
         }
         
-        if (footer) {
+        if (footer instanceof HTMLElement) {
           footer.style.opacity = '0';
           // Start footer animation 0.5s after hero animation completes (0.5s + 1.2s + 0.5s = 2.2s)
           footer.style.animation = 'fadeInUp 1.0s ease-out 2.2s forwards';
@@ -67,7 +71,7 @@ const { title } = Astro.props;
 
 
         // Optimized scroll bounce back effect - throttled for better performance
-        let scrollTimeout;
+        let scrollTimeout: ReturnType<typeof setTimeout> | undefined;
         let isScrolling = false;
         let lastScrollTime = 0;
 

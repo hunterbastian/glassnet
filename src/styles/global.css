@@ -18,6 +18,16 @@ body {
   overscroll-behavior: bounce;
 }
 
+/* Ensure all monospace utilities use JetBrains Mono Regular by default */
+:root {
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+code, pre, kbd, samp, tt, .font-mono {
+  font-family: var(--font-mono) !important;
+  font-weight: 400;
+}
+
 /* Glass morphism utilities */
 .glass {
   @apply backdrop-blur-sm bg-white/20 border border-white/30 rounded-2xl shadow-xl;
