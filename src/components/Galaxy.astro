@@ -66,9 +66,8 @@
   }
 
   function drawGalaxy() {
-    // Clear with subtle fade for trail effect
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-    ctx.fillRect(0, 0, width, height);
+    // Clear canvas completely for crisp stars (no trail effect)
+    ctx.clearRect(0, 0, width, height);
 
     // Sort stars by z-index for depth
     const sortedStars = [...stars].sort((a, b) => a.z - b.z);
@@ -83,9 +82,9 @@
       // Skip if out of bounds
       if (x < -50 || x > width + 50 || y < -50 || y > height + 50) return;
 
-      // Size and brightness based on depth
+      // Size and brightness based on depth - increased brightness for visibility
       const size = star.size * scale;
-      const brightness = star.brightness * (0.3 + scale * 0.7);
+      const brightness = Math.min(1, star.brightness * (0.6 + scale * 0.8));
 
       // Draw star with glow
       ctx.beginPath();
