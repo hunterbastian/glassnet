@@ -28,10 +28,10 @@ const { title } = Astro.props;
 
 
     <!-- Reduced background bubbles for better performance -->
-    <div class="fixed inset-0 pointer-events-none overflow-hidden">
-      <div class="bubble w-32 h-32 top-20 left-20" style="animation-delay: 0s;"></div>
-      <div class="bubble bubble-slow w-24 h-24 top-40 right-32" style="animation-delay: 3s;"></div>
-      <div class="bubble w-28 h-28 bottom-20 right-20" style="animation-delay: 6s;"></div>
+    <div class="fixed inset-0 pointer-events-none overflow-hidden" id="background-bubbles">
+      <div class="bubble w-32 h-32 top-20 left-20" style="animation-delay: 0s;" data-speed="-0.5"></div>
+      <div class="bubble bubble-slow w-24 h-24 top-40 right-32" style="animation-delay: 3s;" data-speed="0.8"></div>
+      <div class="bubble w-28 h-28 bottom-20 right-20" style="animation-delay: 6s;" data-speed="-0.3"></div>
     </div>
 
 
@@ -44,16 +44,16 @@ const { title } = Astro.props;
     <!-- Footer -->
     <footer class="absolute bottom-0 left-0 right-0 z-50 py-4 fade-in-footer">
       <div class="text-center">
-        <p class="text-white/70 font-mono text-sm shimmer-glass">
+        <p class="text-white/80 font-mono text-sm shimmer-glass font-medium">
           HUNTER BASTIAN @ 2025 | MINISITE I
         </p>
       </div>
     </footer>
 
-    <!-- Simple fade-in animation and scroll bounce script -->
+    <!-- Animation and Parallax Scripts -->
     <script>
-      // Simple fade-in for hero section and footer
       document.addEventListener('DOMContentLoaded', () => {
+        // 1. Fade-in animations
         const heroSection = document.querySelector('.fade-in-section');
         const footer = document.querySelector('.fade-in-footer');
         
@@ -64,20 +64,39 @@ const { title } = Astro.props;
         
         if (footer instanceof HTMLElement) {
           footer.style.opacity = '0';
-          // Start footer animation 0.5s after hero animation completes (0.5s + 1.2s + 0.5s = 2.2s)
+          // Start footer animation after hero
           footer.style.animation = 'fadeInUp 1.0s ease-out 2.2s forwards';
         }
 
+        // 2. Parallax Effect
+        const handleParallax = (e: MouseEvent) => {
+          const x = (e.clientX - window.innerWidth / 2) / 50;
+          const y = (e.clientY - window.innerHeight / 2) / 50;
 
+          // Select all elements with data-speed attribute
+          const parallaxElements = document.querySelectorAll('[data-speed]');
 
-        // Optimized scroll bounce back effect - throttled for better performance
+          parallaxElements.forEach((el) => {
+            if (el instanceof HTMLElement) {
+              const speed = parseFloat(el.getAttribute('data-speed') || '0');
+              // Use 'translate' property which is independent of 'transform' (animations)
+              // Inverting x/y for a more natural "depth" feel usually
+              el.style.translate = `${x * speed}px ${y * speed}px`;
+            }
+          });
+        };
+
+        // Add event listener for mouse movement
+        // Throttling could be added here if performance issues arise, but modern browsers handle this well
+        window.addEventListener('mousemove', handleParallax);
+
+        // 3. Smooth Scroll Bounce (Optimized)
         let scrollTimeout: ReturnType<typeof setTimeout> | undefined;
         let isScrolling = false;
         let lastScrollTime = 0;
 
         const handleScroll = () => {
           const now = Date.now();
-          // Throttle scroll events to every 100ms for better performance
           if (now - lastScrollTime < 100) return;
           lastScrollTime = now;
 
@@ -92,11 +111,10 @@ const { title } = Astro.props;
                 behavior: 'smooth'
               });
               isScrolling = false;
-            }, 200); // Slightly longer delay for smoother feel
+            }, 200);
           }
         };
 
-        // Add throttled scroll event listener
         window.addEventListener('scroll', handleScroll, { passive: true });
       });
     </script>
@@ -118,8 +136,10 @@ const { title } = Astro.props;
     overflow: hidden;
     transition: all 0.3s ease;
     display: inline-block;
-    padding: 4px 8px;
-    border-radius: 4px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
   }
   
   .shimmer-glass::before {
@@ -132,7 +152,7 @@ const { title } = Astro.props;
     background: linear-gradient(
       90deg,
       transparent,
-      rgba(255, 255, 255, 0.3),
+      rgba(255, 255, 255, 0.4),
       transparent
     );
     transform: translateX(-100%) skewX(-15deg);
@@ -147,8 +167,7 @@ const { title } = Astro.props;
   
   .shimmer-glass:hover {
     transform: scale(1.05);
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+    background: rgba(255,255,255,0.2);
   }
-
-
 </style>
